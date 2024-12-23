@@ -51,7 +51,7 @@ const FavouriteProducts: React.FC<FavouriteProductsProps> = ({ products }) => {
 				))}
 			</div>
 			<div className="flex justify-center align-center mb-5">
-				<button className=" flex flex-row justify-center items-center gap-2 shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-black dark:border-white dark:text-white text-black rounded-lg font-bold transform hover:-translate-y-1 transition duration-400 hover:bg-black hover:text-white">
+				<button className=" flex flex-row justify-center items-center gap-2 shadow-[0_0_0_3px_#000000_inset] px-6 py-2 bg-transparent border border-bold dark:border-white dark:text-white text-black rounded-2xl font-bold transform hover:-translate-y-1 transition duration-400 hover:bg-black hover:text-white">
 					Tout les produits
 					<span>
 						<GrFormView />
