@@ -9,7 +9,7 @@ const NavigationBar = () => {
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
 	return (
-		<nav className="lg:border-b border-gray-600">
+		<nav className=" border-gray-600">
 			<div className="bg-white px-6 py-3 flex justify-between items-center border-b border-gray-600">
 				<div className="space-x-6 lg:block hidden">
 					<a
