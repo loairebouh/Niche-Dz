@@ -5,10 +5,10 @@ import imageTwo from "../../../public/assets/main-image-2.jpg";
 
 const Hero = () => {
 	return (
-		<section className="mx-auto max-w-2xl px-4 sm:pb-6 lg:max-w-7xl lg:px-8 mt-10">
+		<section className="mx-auto max-w-2xl px-4 sm:pb-6 lg:max-w-7xl lg:px-8 mt-10 ">
 			<div className="mb-8 flex flex-wrap justify-between md:mb-16">
 				<div className="mb-6 flex w-full flex-col justify-center sm:mb12 lg:mb-0 lg:w-1/3 lg:pb-24 lg:pt-48">
-					<h1 className="mb-4 text-4xl font-bold text-black lg:text-5xl md:mb-8 md:text-6xl">
+					<h1 className="mb-4 text-5xl font-bold text-black lg:text-5xl md:mb-8 md:text-6xl lg:text-right text-center ">
 						L&apos;odeur du luxe, l&apos;essence de{" "}
 						<span>l&apos;authenticité</span>
 					</h1>

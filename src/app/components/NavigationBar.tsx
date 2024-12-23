@@ -9,7 +9,7 @@ const NavigationBar = () => {
 	const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
 	return (
-		<nav className="lg:border-b border-gray-600 ">
+		<nav className="lg:border-b border-gray-600">
 			<div className="bg-white px-6 py-3 flex justify-between items-center border-b border-gray-600">
 				<div className="space-x-6 lg:block hidden">
 					<a
@@ -38,20 +38,37 @@ const NavigationBar = () => {
 						onClick={toggleMenu}
 						className="text-black focus:outline-none"
 					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="h-6 w-6"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-							strokeWidth="2"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M4 6h16M4 12h16M4 18h16"
-							/>
-						</svg>
+						{isMenuOpen ? (
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="h-6 w-6"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								strokeWidth="2"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M6 18L18 6M6 6l12 12"
+								/>
+							</svg>
+						) : (
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="h-6 w-6"
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+								strokeWidth="2"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M4 6h16M4 12h16M4 18h16"
+								/>
+							</svg>
+						)}
 					</button>
 				</div>
 			</div>
@@ -68,7 +85,7 @@ const NavigationBar = () => {
 				</a>
 				<a
 					href="#"
-					className="block text-md font-semibold text-white px-6 py-2 hover:text-gray-600 "
+					className="block text-md font-semibold text-white px-6 py-2 hover:text-gray-600"
 				>
 					De Nous
 				</a>
