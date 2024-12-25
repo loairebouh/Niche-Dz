@@ -4,6 +4,7 @@ import NavigationBar from "./components/NavigationBar";
 import { fetchProducts } from "../../lib/api";
 import { Product } from "../../types/index";
 import { AppleCardsCarouselDemo } from "./components/AppleCards";
+import Footer from "./components/Footer";
 
 export default async function Home() {
   const products: Product[] = await fetchProducts();
@@ -13,6 +14,7 @@ export default async function Home() {
       <Hero></Hero>
       <FavouriteProducts products={products}></FavouriteProducts>
       <AppleCardsCarouselDemo></AppleCardsCarouselDemo>
+      <Footer></Footer>
     </div>
   );
 }
