@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { Product } from "../../../types/index";
 import { urlFor } from "../../../lib/sanity";
@@ -9,7 +10,6 @@ interface FavouriteProductsProps {
 
 const FavouriteProducts: React.FC<FavouriteProductsProps> = ({ products }) => {
 	const firstFourProducts = products.slice(0, 4);
-
 	return (
 		<div className="max-w-7xl mx-auto px-4 border-b border-gray-700">
 			<h1 className="text-center lg:text-5xl text-4xl font-bold mt-10">
