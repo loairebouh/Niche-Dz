@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NavigationBar from "./components/NavigationBar";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
