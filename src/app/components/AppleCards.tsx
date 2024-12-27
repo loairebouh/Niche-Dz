@@ -21,7 +21,7 @@ export function AppleCardsCarouselDemo() {
   ));
 
   return (
-    <div className="h-full w-full py-20">
+    <div id="about" className="h-full w-full py-20">
       <h2 className="mx-auto max-w-7xl pl-4 text-center font-sans text-4xl font-bold text-neutral-800 dark:text-neutral-200 md:text-5xl lg:text-5xl">
         Plus De Nous
       </h2>

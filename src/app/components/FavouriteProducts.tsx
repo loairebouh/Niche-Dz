@@ -22,7 +22,7 @@ const FavouriteProducts: React.FC<FavouriteProductsProps> = ({ products }) => {
       <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {firstFourProducts.map((product) => (
           <div key={product._id} className="mb-10 flex flex-col items-center">
-            <Link href={`/products/${product.slug.current}`}>
+            <Link href={`/product/${product.slug.current}`}>
               <div className="relative w-full overflow-hidden rounded-3xl">
                 <img
                   src={urlFor(product.mainImage).width(400).url()}
@@ -54,12 +54,14 @@ const FavouriteProducts: React.FC<FavouriteProductsProps> = ({ products }) => {
         ))}
       </div>
       <div className="align-center mb-5 flex justify-center">
-        <button className="border-bold duration-400 flex transform flex-row items-center justify-center gap-2 rounded-2xl border bg-transparent px-6 py-2 font-bold text-black shadow-[0_0_0_3px_#000000_inset] transition hover:-translate-y-1 hover:bg-black hover:text-white dark:border-white dark:text-white">
-          Tout les produits
-          <span>
-            <GrFormView />
-          </span>
-        </button>
+        <Link href={"/allProducts"}>
+          <button className="border-bold duration-400 flex transform flex-row items-center justify-center gap-2 rounded-2xl border bg-transparent px-6 py-2 font-bold text-black shadow-[0_0_0_3px_#000000_inset] transition hover:-translate-y-1 hover:bg-black hover:text-white dark:border-white dark:text-white">
+            Tout les produits
+            <span>
+              <GrFormView />
+            </span>
+          </button>
+        </Link>
       </div>
     </div>
   );

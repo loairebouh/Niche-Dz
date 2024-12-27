@@ -24,7 +24,7 @@ export default async function AllProducts() {
       <div className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product) => (
           <div key={product._id} className="mb-10 flex flex-col items-center">
-            <Link href={`/products/${product.slug.current}`}>
+            <Link href={`/product/${product.slug.current}`}>
               <div className="relative w-full overflow-hidden rounded-3xl">
                 <img
                   src={urlFor(product.mainImage).width(400).url()}
@@ -41,13 +41,28 @@ export default async function AllProducts() {
                     {product.name}
                   </h2>
                   <p className="text-lg font-bold text-gray-900">
-                    {product.priceBottle ? `${product.priceBottle} DA` : "N/A"}
+                    {product.saleOptions === "full"
+                      ? `${product.priceBottle || "N/A"} DA`
+                      : product.saleOptions === "divided"
+                        ? `${product.priceDivision || "N/A"} DA`
+                        : product.saleOptions === "both"
+                          ? `${product.priceBottle || "N/A"} DA`
+                          : "N/A"}
                   </p>
                 </div>
-                <div className="mt-2 text-sm text-gray-600">
+                {product.saleOptions === "divided" && (
+                  <p className="mt-1 text-sm text-red-700">
+                    Divisement Seulement
+                  </p>
+                )}
+                <div className="mt-1 text-sm font-bold text-gray-600">
                   <p>
                     <strong>Category:</strong>{" "}
                     <span className="capitalize">{product.category}</span>
+                  </p>
+                  <p>
+                    <strong>Description:</strong>{" "}
+                    {product.description || "No description available"}
                   </p>
                 </div>
               </div>

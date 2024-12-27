@@ -13,18 +13,18 @@ const NavigationBar = () => {
     <nav className="border-gray-600">
       <div className="flex items-center justify-between border-b border-gray-600 bg-white px-6 py-3">
         <div className="hidden space-x-6 lg:block">
-          <a
-            href="#"
+          <Link
+            href={"/allProducts"}
             className="text-md font-semibold text-black hover:text-gray-600"
           >
             Boutique
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            href="/#about"
             className="text-md font-semibold text-black hover:text-gray-600"
           >
             De Nous
-          </a>
+          </Link>
         </div>
         <div>
           <Link href="/">

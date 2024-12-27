@@ -4,6 +4,7 @@ export interface Note {
 }
 
 export interface Product {
+  priceDivided: number;
   _id: string;
   name: string;
   slug: {
