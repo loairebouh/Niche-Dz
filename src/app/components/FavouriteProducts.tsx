@@ -42,6 +42,21 @@ const FavouriteProducts: React.FC<FavouriteProductsProps> = ({ products }) => {
                     {product.priceBottle ? `${product.priceBottle} DA` : "N/A"}
                   </p>
                 </div>
+                {product.saleOptions === "divided" && (
+                  <p className="mt-1 text-sm text-red-700">
+                    Divisement Seulement
+                  </p>
+                )}
+                {product.saleOptions === "full" && (
+                  <p className="mt-1 text-sm font-bold text-green-700">
+                    Bouteille Complete Seulement
+                  </p>
+                )}
+                {product.saleOptions === "both" && (
+                  <p className="mt-1 text-sm font-bold text-blue-700">
+                    Disponible Complète Ou Divisé
+                  </p>
+                )}
                 <div className="mt-2 text-sm text-gray-600">
                   <p>
                     <strong>Category:</strong>{" "}

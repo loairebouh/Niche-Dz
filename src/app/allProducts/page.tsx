@@ -55,6 +55,17 @@ export default async function AllProducts() {
                     Divisement Seulement
                   </p>
                 )}
+                {product.saleOptions === "full" && (
+                  <p className="mt-1 text-sm font-bold text-green-700">
+                    Bouteille Complete Seulement
+                  </p>
+                )}
+                {product.saleOptions === "both" && (
+                  <p className="mt-1 text-sm font-bold text-blue-700">
+                    Disponible Complète Ou Divisé
+                  </p>
+                )}
+
                 <div className="mt-1 text-sm font-bold text-gray-600">
                   <p>
                     <strong>Category:</strong>{" "}
