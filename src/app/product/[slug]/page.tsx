@@ -31,7 +31,9 @@ const ProductDetails = async ({ params }: Props) => {
   const getVolume = () => {
     if (product.saleOptions === "divided") {
       return product.volume ? (
-        <span>Volume Restant: {product.volume} mL</span>
+        <div>
+          Volume Restant: <div className="font-bold"> {product.volume} mL</div>
+        </div>
       ) : (
         "N/A"
       );
@@ -50,7 +52,7 @@ const ProductDetails = async ({ params }: Props) => {
   const getPrice = () => {
     if (product.saleOptions === "full") {
       return product.priceBottle ? (
-        <span className="text-3xl font-bold">{product.priceBottle} DA</span>
+        <span className="font-bold">{product.priceBottle} DA</span>
       ) : (
         "N/A"
       );
@@ -119,12 +121,12 @@ const ProductDetails = async ({ params }: Props) => {
   };
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10">
-      <div className="grid grid-cols-10 gap-8">
-        <div className="col-span-5">
+    <div className="mx-auto max-w-7xl px-4 py-0 lg:py-10">
+      <div className="flex flex-col gap-8 lg:grid lg:grid-cols-10">
+        <div className="lg:col-span-5">
           <div className="flex flex-col">
             {product.mainImage && (
-              <div className="mt-6">
+              <div className="mt-0 lg:mt-6">
                 <Image
                   src={urlFor(product.mainImage).url()}
                   alt={product.name}
@@ -136,7 +138,7 @@ const ProductDetails = async ({ params }: Props) => {
             )}
           </div>
           <div className="">
-            <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-1 grid grid-cols-1 gap-6 md:grid-cols-2 lg:mt-6 lg:grid-cols-3">
               {images.map((image: any, index: number) => (
                 <div
                   key={index}
@@ -147,23 +149,26 @@ const ProductDetails = async ({ params }: Props) => {
                     alt={`${product.name} - Image ${index + 1}`}
                     width={500}
                     height={500}
-                    className="h-auto w-full object-cover transition-transform duration-300 hover:scale-105"
+                    className="h-auto w-1/3 object-cover transition-transform duration-300 hover:scale-105 lg:w-1/2"
                   />
                 </div>
               ))}
             </div>
           </div>
         </div>
-        <div className="col-span-5">
+
+        <div className="lg:col-span-5">
           <div className="flex flex-col gap-3">
-            <h1 className="font-bold lg:mt-10 lg:text-4xl">{product.name}</h1>
+            <h1 className="text-4xl font-bold lg:mt-10 lg:text-4xl">
+              {product.name}
+            </h1>
             <p className="text-md text-gray-700">{product.description}</p>
           </div>
-          <div className="flex flex-col gap-2 rounded-3xl border-4 border-black bg-black p-5 lg:my-5">
-            <span className="text-center font-semibold text-white lg:text-4xl">
+          <div className="my-5 flex flex-col gap-2 rounded-3xl border-4 border-black bg-black p-5 lg:my-5">
+            <span className="text-center text-2xl font-semibold text-white lg:text-3xl">
               Les Notes:
             </span>
-            <div className="text-center text-white">
+            <div className="flex flex-col gap-2 text-center text-white">
               {product.notes.length > 0 ? (
                 product.notes.map((note, index) => (
                   <div key={index}>
@@ -178,6 +183,7 @@ const ProductDetails = async ({ params }: Props) => {
               )}
             </div>
           </div>
+
           <div className="mb-0 flex flex-col gap-1">
             <p className="text-lg font-medium text-black">{getVolume()}</p>
             <p className="text-lg font-medium text-gray-800">
@@ -192,7 +198,7 @@ const ProductDetails = async ({ params }: Props) => {
                   {getPriceDescription()}
                 </p>
                 <div
-                  className={`text-2xl font-bold text-gray-900 ${
+                  className={`text-4xl font-bold text-gray-900 ${
                     product.saleOptions === "both" ? "flex flex-col gap-1" : ""
                   }`}
                 >
@@ -201,6 +207,7 @@ const ProductDetails = async ({ params }: Props) => {
               </div>
             </div>
           </div>
+
           <div className="flex w-full items-center justify-center">
             <button className="relative mx-10 mt-6 w-full p-[3px]">
               <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500" />
