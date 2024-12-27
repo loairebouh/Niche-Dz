@@ -31,14 +31,17 @@ const ProductDetails = async ({ params }: Props) => {
   const getVolume = () => {
     if (product.saleOptions === "divided") {
       return product.volume ? (
-        <span>Volume Restant: {product.volume}</span>
+        <span>Volume Restant: {product.volume} mL</span>
       ) : (
         "N/A"
       );
     }
     if (product.saleOptions === "both" || product.saleOptions === "full") {
       return product.volume ? (
-        <span>Volume de Bouteille: {product.volume}</span>
+        <div>
+          <span className="text-black">Volume de Bouteille:</span>{" "}
+          {product.volume} mL
+        </div>
       ) : (
         "N/A"
       );
@@ -55,9 +58,7 @@ const ProductDetails = async ({ params }: Props) => {
 
     if (product.saleOptions === "divided") {
       return product.priceDivision ? (
-        <span className="text-sm text-gray-600">
-          {product.priceDivision} DA
-        </span>
+        <span className={`text-3xl font-bold`}>{product.priceDivision} DA</span>
       ) : (
         "N/A"
       );
@@ -158,12 +159,38 @@ const ProductDetails = async ({ params }: Props) => {
             <h1 className="font-bold lg:mt-10 lg:text-4xl">{product.name}</h1>
             <p className="text-md text-gray-700">{product.description}</p>
           </div>
-          <div className="mt-10">
-            <div className="flex flex-col justify-end">
-              <p className="text-xl font-bold text-red-600">
-                {getPriceDescription()}
-              </p>
-              <div className="flex flex-row">
+          <div className="flex flex-col gap-2 rounded-3xl border-4 border-black bg-black p-5 lg:my-5">
+            <span className="text-center font-semibold text-white lg:text-4xl">
+              Les Notes:
+            </span>
+            <div className="text-center text-white">
+              {product.notes.length > 0 ? (
+                product.notes.map((note, index) => (
+                  <div key={index}>
+                    <div>
+                      <strong>{note.noteName}: </strong>{" "}
+                      <span>{note.noteInfo}</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <span>Pas De Notes Disponible</span>
+              )}
+            </div>
+          </div>
+          <div className="mb-0 flex flex-col gap-1">
+            <p className="text-lg font-medium text-black">{getVolume()}</p>
+            <p className="text-lg font-medium text-gray-800">
+              Category: <span className="capitalize">{product.category}</span>
+            </p>
+          </div>
+
+          <div className="border-1 border-red mt-2">
+            <div className="flex justify-end">
+              <div className="flex flex-col justify-end">
+                <p className="text-xl font-bold text-red-600">
+                  {getPriceDescription()}
+                </p>
                 <div
                   className={`text-2xl font-bold text-gray-900 ${
                     product.saleOptions === "both" ? "flex flex-col gap-1" : ""
@@ -173,11 +200,14 @@ const ProductDetails = async ({ params }: Props) => {
                 </div>
               </div>
             </div>
-
-            <p className="mt-2 text-lg text-gray-600">{getVolume()}</p>
-            <p className="mt-2 text-lg text-gray-600">
-              Category: <span className="capitalize">{product.category}</span>
-            </p>
+          </div>
+          <div className="flex w-full items-center justify-center">
+            <button className="relative mx-10 mt-6 w-full p-[3px]">
+              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500" />
+              <div className="group relative rounded-[6px] bg-black px-8 py-2 text-white transition duration-200 hover:bg-transparent">
+                Commander
+              </div>
+            </button>
           </div>
         </div>
       </div>
