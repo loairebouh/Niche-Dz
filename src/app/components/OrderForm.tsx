@@ -15,10 +15,8 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     phone: "",
     quantity: 1,
-    notes: "",
     wilaya: "",
     county: "",
     deliveryType: "",
@@ -142,42 +140,18 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
     return (basePrice + selectedWilaya.number * 10) * multiplier;
   };
 
-  const sendTelegramMessage = async () => {
-    const message = `
-    Nouveau Commande:
-    Nom: ${formData.name}
-    Email: ${formData.email}
-    Téléphone: ${formData.phone}
-    Type d'achat: ${formData.buyChoice === "full" ? "Bouteille" : "Division"}
-    Quantité: ${formData.divisionQty} mL
-    Wilaya: ${formData.wilaya}
-    Commune: ${formData.county}
-    Type de Livraison: ${formData.deliveryType}
-    Prix d'achat: ${orderPrice} DA
-    Prix de livraison: ${getDeliveryPrice()} DA
-    Total: ${orderPrice + getDeliveryPrice()} DA
-  `;
-
-    console.log("Sending message to Telegram...");
-
-    try {
-      const response = await axios.post(
-        `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
-        {
-          chat_id: process.env.TELEGRAM_CHAT_ID,
-          text: message,
-        },
-      );
-      console.log("Message sent to Telegram:", response.data);
-    } catch (error) {
-      console.error("Error sending message to Telegram:", error);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Order submitted:", formData, product);
-    sendTelegramMessage();
+    console.log("Order submitted:", formData);
+    await axios.post(
+      "/api/sendMessage",
+      JSON.stringify({
+        productName: product.name,
+        deliveryPrice: getDeliveryPrice(),
+        orderPrice: orderPrice,
+        formData: formData,
+      }),
+    );
     handleClosePopup();
   };
 
