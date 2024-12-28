@@ -147,7 +147,6 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
       "/api/sendMessage",
       JSON.stringify({
         productName: product.name,
-        deliveryPrice: getDeliveryPrice(),
         orderPrice: orderPrice,
         formData: formData,
       }),

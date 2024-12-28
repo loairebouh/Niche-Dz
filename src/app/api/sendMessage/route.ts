@@ -7,6 +7,7 @@ async function POST(req: NextRequest) {
   console.log(body);
   const message = `
     Nouveau Commande:
+    Produit: ${body.productName}
     Nom: ${body.formData.name}
     Téléphone: ${body.formData.phone}
     Type d'achat: ${body.formData.buyChoice === "full" ? "Bouteille" : "Division"}
