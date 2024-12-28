@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import sanityClient from "../../../../lib/sanity";
 import { urlFor } from "../../../../lib/sanity";
 import { Product } from "../../../../types";
+import OrderForm from "@/app/components/OrderForm";
 
 interface Props {
   params: { slug: string };
@@ -68,7 +69,6 @@ const ProductDetails = async ({ params }: Props) => {
 
     if (product.saleOptions === "both") {
       const prices = [];
-
       if (product.priceBottle) {
         prices.push(
           <span key="full" className="text-3xl font-bold">
@@ -76,7 +76,6 @@ const ProductDetails = async ({ params }: Props) => {
           </span>,
         );
       }
-
       if (product.priceDivision) {
         prices.push(
           <span key="divided" className="text-sm text-gray-800">
@@ -156,7 +155,6 @@ const ProductDetails = async ({ params }: Props) => {
             </div>
           </div>
         </div>
-
         <div className="lg:col-span-5">
           <div className="flex flex-col gap-3">
             <h1 className="text-4xl font-bold lg:mt-10 lg:text-4xl">
@@ -183,20 +181,18 @@ const ProductDetails = async ({ params }: Props) => {
               )}
             </div>
           </div>
-
           <div className="mb-0 flex flex-col gap-1">
-            <p className="text-lg font-medium text-black">{getVolume()}</p>
-            <p className="text-lg font-medium text-gray-800">
+            <div className="text-lg font-medium text-black">{getVolume()}</div>
+            <div className="text-lg font-medium text-gray-800">
               Category: <span className="capitalize">{product.category}</span>
-            </p>
+            </div>
           </div>
-
           <div className="border-1 border-red mt-2">
             <div className="flex justify-end">
               <div className="flex flex-col justify-end">
-                <p className="text-xl font-bold text-red-600">
+                <div className="text-xl font-bold text-red-600">
                   {getPriceDescription()}
-                </p>
+                </div>
                 <div
                   className={`text-4xl font-bold text-gray-900 ${
                     product.saleOptions === "both" ? "flex flex-col gap-1" : ""
@@ -207,14 +203,8 @@ const ProductDetails = async ({ params }: Props) => {
               </div>
             </div>
           </div>
-
           <div className="flex w-full items-center justify-center">
-            <button className="relative mx-10 mt-6 w-full p-[3px]">
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500" />
-              <div className="group relative rounded-[6px] bg-black px-8 py-2 text-white transition duration-200 hover:bg-transparent">
-                Commander
-              </div>
-            </button>
+            <OrderForm product={product}></OrderForm>
           </div>
         </div>
       </div>

@@ -2,8 +2,8 @@
 import React from "react";
 import { Product } from "../../../types/index";
 import { urlFor } from "../../../lib/sanity";
-import { GrFormView } from "react-icons/gr";
 import Link from "next/link";
+import { GrFormView } from "react-icons/gr";
 
 interface FavouriteProductsProps {
   products: Product[];
@@ -58,10 +58,10 @@ const FavouriteProducts: React.FC<FavouriteProductsProps> = ({ products }) => {
                   </p>
                 )}
                 <div className="mt-2 text-sm text-gray-600">
-                  <p>
+                  <div>
                     <strong>Category:</strong>{" "}
                     <span className="capitalize">{product.category}</span>
-                  </p>
+                  </div>
                 </div>
               </div>
             </Link>
