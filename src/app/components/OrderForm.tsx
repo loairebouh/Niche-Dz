@@ -5,6 +5,7 @@ import { Product } from "../../../types";
 import { wilayas } from "./Wilayas";
 import React from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import axios from "axios";
 
 interface OrderFormProps {
   product: Product;
@@ -33,19 +34,17 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
     >,
   ) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleOrderClick = () => setIsPopupOpen(true);
   const handleClosePopup = () => setIsPopupOpen(false);
 
   const handleBuyChoice = (choice: string) => {
-    setFormData({ ...formData, buyChoice: choice });
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleOrderPrice = (newPrice: number) => {
-    setOrderPrice(newPrice);
+    setFormData((prevData) => ({ ...prevData, buyChoice: choice }));
   };
 
   useEffect(() => {
@@ -67,10 +66,12 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
   }, [formData.buyChoice, formData.divisionQty, product]);
 
   const getSalesOption = () => {
-    if (product.saleOptions === "both") {
+    const { saleOptions } = product;
+
+    if (saleOptions === "both") {
       return (
-        <div className="flex flex-row gap-2 rounded-xl border-2 bg-black px-4 py-2 text-white">
-          <label className="flex flex-row gap-1">
+        <div className="flex gap-2 rounded-xl border-2 bg-black px-4 py-2 text-white">
+          <label className="flex gap-1">
             <input
               type="radio"
               name="buyChoice"
@@ -78,9 +79,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
               checked={formData.buyChoice === "divided"}
               onChange={() => handleBuyChoice("divided")}
             />
-            Division(10mL ou plus)
+            Division (10mL ou plus)
           </label>
-          <label className="flex flex-row gap-1">
+          <label className="flex gap-1">
             <input
               type="radio"
               name="buyChoice"
@@ -93,10 +94,11 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
         </div>
       );
     }
-    if (product.saleOptions === "divided") {
+
+    if (saleOptions === "divided") {
       return (
-        <div className="flex flex-row gap-2 rounded-xl border-2 bg-black px-4 py-2 text-white">
-          <label className="flex flex-row gap-1">
+        <div className="flex gap-2 rounded-xl border-2 bg-black px-4 py-2 text-white">
+          <label className="flex gap-1">
             <input
               type="radio"
               name="buyChoice"
@@ -104,15 +106,16 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
               checked={formData.buyChoice === "divided"}
               onChange={() => handleBuyChoice("divided")}
             />
-            Division(10mL ou plus)
+            Division (10mL ou plus)
           </label>
         </div>
       );
     }
-    if (product.saleOptions === "full") {
+
+    if (saleOptions === "full") {
       return (
-        <div className="flex flex-row gap-2 rounded-xl border-2 bg-black px-4 py-2 text-white">
-          <label className="flex flex-row gap-1">
+        <div className="flex gap-2 rounded-xl border-2 bg-black px-4 py-2 text-white">
+          <label className="flex gap-1">
             <input
               type="radio"
               name="buyChoice"
@@ -128,20 +131,53 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
   };
 
   const getDeliveryPrice = () => {
-    if (!formData.wilaya || !formData.deliveryType) return "N/A";
+    if (!formData.wilaya || !formData.deliveryType) return 0;
 
-    const wilaya = wilayas.find((w) => w.name === formData.wilaya);
-    if (!wilaya) return "N/A";
+    const selectedWilaya = wilayas.find((w) => w.name === formData.wilaya);
+    if (!selectedWilaya) return 0;
 
     const basePrice = 500;
     const multiplier = formData.deliveryType === "home" ? 1.5 : 1;
 
-    return (basePrice + wilaya.number * 10) * multiplier;
+    return (basePrice + selectedWilaya.number * 10) * multiplier;
+  };
+
+  const sendTelegramMessage = async () => {
+    const message = `
+    Nouveau Commande:
+    Nom: ${formData.name}
+    Email: ${formData.email}
+    Téléphone: ${formData.phone}
+    Type d'achat: ${formData.buyChoice === "full" ? "Bouteille" : "Division"}
+    Quantité: ${formData.divisionQty} mL
+    Wilaya: ${formData.wilaya}
+    Commune: ${formData.county}
+    Type de Livraison: ${formData.deliveryType}
+    Prix d'achat: ${orderPrice} DA
+    Prix de livraison: ${getDeliveryPrice()} DA
+    Total: ${orderPrice + getDeliveryPrice()} DA
+  `;
+
+    console.log("Sending message to Telegram...");
+
+    try {
+      const response = await axios.post(
+        `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
+        {
+          chat_id: process.env.TELEGRAM_CHAT_ID,
+          text: message,
+        },
+      );
+      console.log("Message sent to Telegram:", response.data);
+    } catch (error) {
+      console.error("Error sending message to Telegram:", error);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Order submitted:", formData, product);
+    sendTelegramMessage();
     handleClosePopup();
   };
 
@@ -176,7 +212,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
               className="flex max-h-[80vh] flex-col gap-4 overflow-y-auto"
             >
               <div className="flex flex-col gap-2">
-                <h1 className="text-lg font-bold">Nom et Prénom</h1>
+                <label className="text-lg font-bold" htmlFor="name">
+                  Nom et Prénom
+                </label>
                 <input
                   type="text"
                   name="name"
@@ -189,7 +227,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <h1 className="text-lg font-bold">Numéro de téléphone</h1>
+                <label className="text-lg font-bold" htmlFor="phone">
+                  Numéro de téléphone
+                </label>
                 <input
                   type="text"
                   name="phone"
@@ -202,11 +242,15 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <h1 className="text-lg font-bold">Type d&apos;Achat</h1>
+                <label className="text-lg font-bold" htmlFor="buyChoice">
+                  Type d&apos;Achat
+                </label>
                 <div>{getSalesOption()}</div>
                 {formData.buyChoice === "divided" && (
                   <div className="flex flex-col gap-2">
-                    <h1 className="text-lg font-bold">Quantité</h1>
+                    <label className="text-lg font-bold" htmlFor="divisionQty">
+                      Quantité
+                    </label>
                     <select
                       name="divisionQty"
                       value={formData.divisionQty}
@@ -223,7 +267,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <h1 className="text-lg font-bold">Wilaya</h1>
+                <label className="text-lg font-bold" htmlFor="wilaya">
+                  Wilaya
+                </label>
                 <select
                   name="wilaya"
                   value={formData.wilaya}
@@ -253,7 +299,9 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <h1 className="text-lg font-bold">Commune</h1>
+                <label className="text-lg font-bold" htmlFor="county">
+                  Commune
+                </label>
                 <select
                   name="county"
                   value={formData.county}
@@ -272,8 +320,8 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <h1 className="text-lg font-bold">Type de Livraison</h1>
-                <div className="flex flex-row gap-4">
+                <label className="text-lg font-bold">Type de Livraison</label>
+                <div className="flex gap-4">
                   <label className="flex items-center gap-2">
                     <input
                       type="radio"
@@ -298,21 +346,31 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
                   </label>
                 </div>
               </div>
+
               <div>
                 <h1 className="text-2xl font-bold">Facturation</h1>
                 <div className="my-auto flex flex-col gap-2 rounded-2xl border-2 bg-black p-2 text-white">
-                  <div className="flex flex-row gap-2 text-2xl">
-                    <div className="">Prix de livraison: </div>
-                    <div className="text-2xl font-bold">
-                      {getDeliveryPrice()} DA
-                    </div>
+                  <div className="flex gap-2 text-2xl">
+                    <span>Prix de livraison: </span>
+                    <span className="font-bold">{getDeliveryPrice()} DA</span>
                   </div>
-                  <div className="flex flex-row gap-2 text-2xl">
-                    <div className="">Prix d&apos;Achat: </div>
-                    <div className="font-bold">{orderPrice} DA</div>
+                  <div className="flex gap-2 text-2xl">
+                    <span>Prix d&apos;Achat: </span>
+                    <span className="font-bold">{orderPrice} DA</span>
                   </div>
                 </div>
               </div>
+
+              <div className="flex flex-col items-end">
+                <h1 className="text-2xl font-bold">Total</h1>
+                <div className="text-3xl font-bold text-red-500">
+                  {typeof getDeliveryPrice() === "number"
+                    ? orderPrice + getDeliveryPrice()
+                    : "N/A"}{" "}
+                  DA
+                </div>
+              </div>
+
               <div className="flex justify-end gap-4">
                 <button
                   type="button"
@@ -323,6 +381,10 @@ const OrderForm: React.FC<OrderFormProps> = ({ product }) => {
                 </button>
                 <button
                   type="submit"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }}
                   className="group relative rounded-[6px] bg-black px-8 py-2 text-white transition duration-200 hover:bg-green-600"
                 >
                   Confirmer
