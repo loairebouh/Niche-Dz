@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import imageOne from "../../../public/assets/main-image.jpg";
-import imageTwo from "../../../public/assets/main-image-2.jpg";
+import imageOne from "../../../public/amberoud.jpeg";
+import imageTwo from "../../../public/naxos.jpeg";
 
 const Hero = () => {
   return (
